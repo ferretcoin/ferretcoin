@@ -28,15 +28,15 @@ class QUrl;
 QT_END_NAMESPACE
 
 /**
-  Bitcoin GUI main class. This class represents the main window of the Bitcoin UI. It communicates with both the client and
+  Ferretcoin GUI main class. This class represents the main window of the Ferretcoin UI. It communicates with both the client and
   wallet models to give the user an up-to-date view of the current core state.
 */
-class BitcoinGUI : public QMainWindow
+class FerretcoinGUI : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit BitcoinGUI(QWidget *parent = 0);
-    ~BitcoinGUI();
+    explicit FerretcoinGUI(QWidget *parent = 0);
+    ~FerretcoinGUI();
 
     /** Set the client model.
         The client model represents the part of the core that communicates with the P2P network, and is wallet-agnostic.

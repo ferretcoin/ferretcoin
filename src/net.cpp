@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2012 The Bitcoin developers
-// Copyright (c) 2011-2012 Phenixcoin Developers
+// Copyright (c) 2009-2012 The Ferretcoin developers
+// Copyright (c) 2011-2012 Ferretcoin Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -26,7 +26,7 @@
 using namespace std;
 using namespace boost;
 
-static const int MAX_OUTBOUND_CONNECTIONS = 8;
+static const int MAX_OUTBOUND_CONNECTIONS = 16;
 
 void ThreadMessageHandler2(void* parg);
 void ThreadSocketHandler2(void* parg);
@@ -1061,7 +1061,7 @@ void ThreadMapPort2(void* parg)
             }
         }
 
-        string strDesc = "Phenixcoin " + FormatFullVersion();
+        string strDesc = "Ferretcoin " + FormatFullVersion();
 #ifndef UPNPDISCOVER_SUCCESS
         /* miniupnpc 1.5 */
         r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,
@@ -1149,7 +1149,7 @@ void MapPort()
 // The first name is used as information source for addrman.
 // The second name should resolve to a list of seed addresses.
 static const char *strDNSSeed[][2] = {
- //   {"phenixcoinpool.org", "dnsseed.phenixcoinpool.org"},
+ //   {"ferretcoinpool.org", "dnsseed.ferretcoinpool.org"},
  //   {"bytesized-vps.com", "dnsseed.bytesized-vps.com"},
  //   {"xurious.com", "dnsseed.ltc.xurious.com"},
 };
@@ -1727,7 +1727,7 @@ bool BindListenPort(const CService &addrBind, string& strError)
     {
         int nErr = WSAGetLastError();
         if (nErr == WSAEADDRINUSE)
-            strError = strprintf(_("Unable to bind to %s on this computer. Phenixcoin is probably already running."), addrBind.ToString().c_str());
+            strError = strprintf(_("Unable to bind to %s on this computer. Ferretcoin is probably already running."), addrBind.ToString().c_str());
         else
             strError = strprintf(_("Unable to bind to %s on this computer (bind returned error %d, %s)"), addrBind.ToString().c_str(), nErr, strerror(nErr));
         printf("%s\n", strError.c_str());
@@ -1860,7 +1860,7 @@ void StartNode(void* parg)
         printf("Error; CreateThread(ThreadDumpAddress) failed\n");
 
     // Generate coins in the background
-    GenerateBitcoins(GetBoolArg("-gen", false), pwalletMain);
+    GenerateFerretcoins(GetBoolArg("-gen", false), pwalletMain);
 }
 
 bool StopNode()
@@ -1886,7 +1886,7 @@ bool StopNode()
     if (vnThreadsRunning[THREAD_SOCKETHANDLER] > 0) printf("ThreadSocketHandler still running\n");
     if (vnThreadsRunning[THREAD_OPENCONNECTIONS] > 0) printf("ThreadOpenConnections still running\n");
     if (vnThreadsRunning[THREAD_MESSAGEHANDLER] > 0) printf("ThreadMessageHandler still running\n");
-    if (vnThreadsRunning[THREAD_MINER] > 0) printf("ThreadBitcoinMiner still running\n");
+    if (vnThreadsRunning[THREAD_MINER] > 0) printf("ThreadFerretcoinMiner still running\n");
     if (vnThreadsRunning[THREAD_RPCLISTENER] > 0) printf("ThreadRPCListener still running\n");
     if (vnThreadsRunning[THREAD_RPCHANDLER] > 0) printf("ThreadsRPCServer still running\n");
 #ifdef USE_UPNP

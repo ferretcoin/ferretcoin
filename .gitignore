@@ -1,7 +1,7 @@
 src/*.exe
-src/phenixcoin
-src/phenixcoind
-src/test_phenixcoin
+src/ferretcoin
+src/ferretcoind
+src/test_ferretcoin
 src/build.h
 .*.swp
 *.*~*
@@ -14,7 +14,7 @@ src/build.h
 #compilation and Qt preprocessor part
 *.qm
 Makefile
-phenixcoin-qt
+ferretcoin-qt
 #resources cpp
 qrc_*.cpp
 #qt creator

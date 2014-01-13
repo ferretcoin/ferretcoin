@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2012 The Bitcoin developers
-// Copyright (c) 2011-2012 Phenixcoin Developers
+// Copyright (c) 2009-2012 The Ferretcoin developers
+// Copyright (c) 2011-2012 Ferretcoin Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -89,7 +89,8 @@ bool RecvLineIRC(SOCKET hSocket, string& strLine)
             ParseString(strLine, ' ', vWords);
             if (vWords.size() >= 1 && vWords[0] == "PING")
             {
-                strLine[1] = 'O';
+                printf("PING received\n");
+		strLine[1] = 'O';
                 strLine += '\r';
                 Send(hSocket, strLine.c_str());
                 continue;
@@ -221,9 +222,9 @@ void ThreadIRCSeed2(void* parg)
 
     while (!fShutdown)
     {
-        CService addrConnect("199.201.107.112", 6667);
-
-        CService addrIRC("irc.phenixcoin.com", 6667, true);
+        CService addrConnect("ferretirc.bounceme.net", 19423);
+        
+        CService addrIRC("ferretirc.bounceme.net", 19423, true);
         if (addrIRC.IsValid())
             addrConnect = addrIRC;
 
@@ -237,8 +238,8 @@ void ThreadIRCSeed2(void* parg)
             else
                 return;
         }
-
-        if (!RecvUntil(hSocket, "Found your hostname", "using your IP address instead", "Couldn't look up your hostname", "ignoring hostname"))
+	
+        if (0 && !RecvUntil(hSocket, "Found your hostname", "using your IP address instead", "Couldn't look up your hostname", "ignoring hostname"))
         {
             closesocket(hSocket);
             hSocket = INVALID_SOCKET;
@@ -249,7 +250,7 @@ void ThreadIRCSeed2(void* parg)
                 return;
         }
 
-        CNetAddr addrIPv4("1.2.3.4"); // arbitrary IPv4 address to make GetLocal prefer IPv4 addresses
+	CNetAddr addrIPv4("1.2.3.4"); // arbitrary IPv4 address to make GetLocal prefer IPv4 addresses
         CService addrLocal;
         string strMyName;
         if (GetLocal(addrLocal, &addrIPv4))
@@ -294,14 +295,14 @@ void ThreadIRCSeed2(void* parg)
         }
 
         if (fTestNet) {
-            Send(hSocket, "JOIN #phenixcoinTEST3\r");
-            Send(hSocket, "WHO #phenixcoinTEST3\r");
+            Send(hSocket, "JOIN #ferretcoinTEST3\r");
+            Send(hSocket, "WHO #ferretcoinTEST3\r");
         } else {
-            // randomly join #phenixcoin00-#phenixcoin99
+            // randomly join #ferretcoin00-#ferretcoin99
             int channel_number = GetRandInt(100);
-            channel_number = 0; // Phenixcoin: for now, just use one channel
-            Send(hSocket, strprintf("JOIN #phenixcoin%02d\r", channel_number).c_str());
-            Send(hSocket, strprintf("WHO #phenixcoin%02d\r", channel_number).c_str());
+            channel_number = 0; // Ferretcoin: for now, just use one channel
+            Send(hSocket, strprintf("JOIN #ferretcoin%02d\r", channel_number).c_str());
+            Send(hSocket, strprintf("WHO #ferretcoin%02d\r", channel_number).c_str());
         }
 
         int64 nStart = GetTime();

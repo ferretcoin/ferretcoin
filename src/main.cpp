@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2012 The Bitcoin developers
-// Copyright (c) 2011-2012 Phenixcoin Developers
+// Copyright (c) 2009-2012 The Ferretcoin developers
+// Copyright (c) 2011-2012 Ferretcoin Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -29,8 +29,8 @@ CTxMemPool mempool;
 unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
-uint256 hashGenesisBlock("0xbe2f30f9e8db8f430056869c43503a992d232b28508e83eda101161a18cf7c73");
-static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Phenixcoin: starting difficulty is 1 / 2^12
+uint256 hashGenesisBlock("0x29702e784f0d420505117d570b00fcb4478cfef7ed7308d409e5e7072c349999");
+static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Ferretcoin: starting difficulty is 1 / 2^12
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
 CBigNum bnBestChainWork = 0;
@@ -50,7 +50,7 @@ map<uint256, map<uint256, CDataStream*> > mapOrphanTransactionsByPrev;
 // Constant stuff for coinbase transactions we create:
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "Phenixcoin Signed Message:\n";
+const string strMessageMagic = "Ferretcoin Signed Message:\n";
 
 double dHashesPerSec;
 int64 nHPSTimerStart;
@@ -828,17 +828,17 @@ uint256 static GetOrphanRoot(const CBlock* pblock)
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
-    int64 nSubsidy = 50 * COIN;
+    int64 nSubsidy = 23 * COIN;
 
-    // Subsidy is cut in half every 840000 blocks, which will occur approximately every 4 years
-    nSubsidy >>= (nHeight / 840000); // Phenixcoin: 840k blocks in ~4 years
+    // Subsidy is cut in half every 1050000 blocks, which will occur approximately every 4 years
+    nSubsidy >>= (nHeight / 1752000); // Ferretcoin: 840k blocks in ~4 years
 
     return nSubsidy + nFees;
 }
 
-//static const int64 nTargetTimespan = 2.5 * 24 * 60 * 60; // Phenixcoin: 2.5 days
-static const int64 nTargetTimespan = (5 * 24 * 60 * 60) / 8; // Phenixcoin: 2.5 days
-static const int64 nTargetSpacing = 1.5 * 60; // Phenixcoin: 1.5 minutes
+//static const int64 nTargetTimespan = 2.5 * 24 * 60 * 60; // Ferretcoin: 2.5 days
+static const int64 nTargetTimespan = 1 * 24 * 60 * 60; // Ferretcoin: 2.5 days
+static const int64 nTargetSpacing = 1.5 * 60; // Ferretcoin: 1.5 minutes
 
 
 //
@@ -859,7 +859,7 @@ unsigned int ComputeMinWork(unsigned int nBase, int64 nTime)
         // Maximum 400% adjustment...
 //        bnResult *= 4;
         // Maximum 80% adjustment...
-        bnResult = (bnResult * 99) / 55;
+        bnResult = (bnResult * 123) / 55;
         // ... in best-case exactly 4-times-normal target time
         nTime -= nTargetTimespan*4;
     }
@@ -877,9 +877,9 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
         return nProofOfWorkLimit;
 
     // Only change once per interval
-    // PhenixCoin difficulty adjustment protocol switch - Taken from Feathercoin and ajusted to Phenix Params
+    // FerretCoin difficulty adjustment protocol switch - Taken from Feathercoin and ajusted to Ferret Params
     // Switching to retaret of 480 blocks .. approx 12hrs.
-    static const int nDifficultySwitchHeight = 46500;
+    static const int nDifficultySwitchHeight = 0;
     int nHeight = pindexLast->nHeight + 1;
     bool fNewDifficultyProtocol = (nHeight >= nDifficultySwitchHeight || fTestNet);
 
@@ -910,7 +910,7 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
         return pindexLast->nBits;
     }
 
-    // Phenixcoin: This fixes an issue where a 51% attack can change difficulty at will.
+    // Ferretcoin: This fixes an issue where a 51% attack can change difficulty at will.
     // Go back the full period unless it's the first retarget after genesis. Code courtesy of Art Forz
     int blockstogoback = nInterval-1;
     if (nHeight != nInterval)
@@ -925,8 +925,8 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
     // Limit adjustment step
     int64 nActualTimespan = pindexLast->GetBlockTime() - pindexFirst->GetBlockTime();
     printf("  nActualTimespan = %"PRI64d"  before bounds\n", nActualTimespan);
-     int64 nActualTimespanMax = fNewDifficultyProtocol? ((nTargetTimespanCurrent*99)/55) : (nTargetTimespanCurrent*4);
-    int64 nActualTimespanMin = fNewDifficultyProtocol? ((nTargetTimespanCurrent*55)/99) : (nTargetTimespanCurrent/4);
+     int64 nActualTimespanMax = fNewDifficultyProtocol? ((nTargetTimespanCurrent*123)/55) : (nTargetTimespanCurrent*4);
+    int64 nActualTimespanMin = fNewDifficultyProtocol? ((nTargetTimespanCurrent*55)/123) : (nTargetTimespanCurrent/4);
     
     if (nActualTimespan < nActualTimespanMin)
         nActualTimespan = nActualTimespanMin;
@@ -1185,7 +1185,7 @@ bool CTransaction::ConnectInputs(MapPrevTx inputs,
 {
     // Take over previous transactions' spent pointers
     // fBlock is true when this is called from AcceptBlock when a new best-block is added to the blockchain
-    // fMiner is true when called from the internal phenixcoin miner
+    // fMiner is true when called from the internal ferretcoin miner
     // ... both are false when called from CTransaction::AcceptToMemoryPool
     if (!IsCoinBase())
     {
@@ -1932,7 +1932,7 @@ bool CheckDiskSpace(uint64 nAdditionalBytes)
         string strMessage = _("Warning: Disk space is low");
         strMiscWarning = strMessage;
         printf("*** %s\n", strMessage.c_str());
-        uiInterface.ThreadSafeMessageBox(strMessage, "Phenixcoin", CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
+        uiInterface.ThreadSafeMessageBox(strMessage, "Ferretcoin", CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
         StartShutdown();
         return false;
     }
@@ -1988,7 +1988,7 @@ bool LoadBlockIndex(bool fAllowNew)
         pchMessageStart[1] = 0xc1;
         pchMessageStart[2] = 0xb7;
         pchMessageStart[3] = 0xdc;
-        hashGenesisBlock = uint256("0xf5ae71e26c74beacc88382716aced69cddf3dffff24f384e1808905e0188f68f");
+        hashGenesisBlock = uint256("0x2c8b6be3fa58d9994325deee64a31c80695821d7055fcd5f9dff425ae246e160");
     }
 
     //
@@ -2015,7 +2015,7 @@ bool LoadBlockIndex(bool fAllowNew)
         //   vMerkleTree: 97ddfbbae6
 
         // Genesis block
-        const char* pszTimestamp = "U.S. Is Weighing Wide Overhaul of Wiretap Laws - NY Times - May 8 2013";
+        const char* pszTimestamp = "Shooting from the hip: Ted Nugent rocks politics - Washington Post - July 8 2013";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
@@ -2028,24 +2028,24 @@ bool LoadBlockIndex(bool fAllowNew)
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1317972665;
+        block.nTime    = 1373396555;
         block.nBits    = 0x1e0ffff0;
-        block.nNonce   = 2084931085;
+        block.nNonce   = 716009;
 
         if (fTestNet)
         {
-            block.nTime    = 1317798646;
-            block.nNonce   = 385270584;
+            block.nTime    = 1373323000;
+            block.nNonce   = 46474;
         }
 
         //// debug print
         printf("%s\n", block.GetHash().ToString().c_str());
         printf("%s\n", hashGenesisBlock.ToString().c_str());
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
-        assert(block.hashMerkleRoot == uint256("0xff2aa75842fae1bfb100b656c57229ce37b03643434da2043ddab7a11cfe69a6"));
+        assert(block.hashMerkleRoot == uint256("0x576b89c6fa38a1208448111e773d1d7e88b27ee7bc4d77e83a0fed74ac44a46f"));
 
         // If genesis block hash does not match, then generate new genesis hash.
-        if (true && block.GetHash() != hashGenesisBlock)
+        if (false && block.GetHash() != hashGenesisBlock)
         {
             printf("Searching for genesis block...\n");
             // This will figure out a valid hash and Nonce if you're
@@ -2388,7 +2388,7 @@ bool static AlreadyHave(CTxDB& txdb, const CInv& inv)
 // The message start string is designed to be unlikely to occur in normal data.
 // The characters are rarely used upper ascii, not valid as UTF-8, and produce
 // a large 4-byte int at any alignment.
-unsigned char pchMessageStart[4] = { 0xfb, 0xc0, 0xb6, 0xdb }; // Phenixcoin: increase each by adding 2 to bitcoin's value.
+unsigned char pchMessageStart[4] = { 0xfb, 0xc0, 0xb6, 0xdb }; // Ferretcoin: increase each by adding 2 to bitcoin's value.
 
 
 bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
@@ -3272,7 +3272,7 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// BitcoinMiner
+// FerretcoinMiner
 //
 
 int static FormatHashBlocks(void* pbuffer, unsigned int len)
@@ -3476,7 +3476,7 @@ CBlock* CreateNewBlock(CReserveKey& reservekey)
                 continue;
 
             // Transaction fee required depends on block size
-            // Phenixcoind: Reduce the exempted free transactions to 500 bytes (from Bitcoin's 3000 bytes)
+            // Ferretcoind: Reduce the exempted free transactions to 500 bytes (from Ferretcoin's 3000 bytes)
             bool fAllowFree = (nBlockSize + nTxSize < 1500 || CTransaction::AllowFree(dPriority));
             int64 nMinFee = tx.GetMinFee(nBlockSize, fAllowFree, GMF_BLOCK);
 
@@ -3614,7 +3614,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
         return false;
 
     //// debug print
-    printf("BitcoinMiner:\n");
+    printf("FerretcoinMiner:\n");
     printf("proof-of-work found  \n  hash: %s  \ntarget: %s\n", hash.GetHex().c_str(), hashTarget.GetHex().c_str());
     pblock->print();
     printf("generated %s\n", FormatMoney(pblock->vtx[0].vout[0].nValue).c_str());
@@ -3623,7 +3623,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     {
         LOCK(cs_main);
         if (pblock->hashPrevBlock != hashBestChain)
-            return error("BitcoinMiner : generated block is stale");
+            return error("FerretcoinMiner : generated block is stale");
 
         // Remove key from key pool
         reservekey.KeepKey();
@@ -3636,21 +3636,21 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
 
         // Process this block the same as if we had received it from another node
         if (!ProcessBlock(NULL, pblock))
-            return error("BitcoinMiner : ProcessBlock, block not accepted");
+            return error("FerretcoinMiner : ProcessBlock, block not accepted");
     }
 
     return true;
 }
 
-void static ThreadBitcoinMiner(void* parg);
+void static ThreadFerretcoinMiner(void* parg);
 
-static bool fGenerateBitcoins = false;
+static bool fGenerateFerretcoins = false;
 static bool fLimitProcessors = false;
 static int nLimitProcessors = -1;
 
-void static BitcoinMiner(CWallet *pwallet)
+void static FerretcoinMiner(CWallet *pwallet)
 {
-    printf("BitcoinMiner started\n");
+    printf("FerretcoinMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
 
     // Make this thread recognisable as the mining thread
@@ -3660,7 +3660,7 @@ void static BitcoinMiner(CWallet *pwallet)
     CReserveKey reservekey(pwallet);
     unsigned int nExtraNonce = 0;
 
-    while (fGenerateBitcoins)
+    while (fGenerateFerretcoins)
     {
         if (fShutdown)
             return;
@@ -3669,7 +3669,7 @@ void static BitcoinMiner(CWallet *pwallet)
             Sleep(1000);
             if (fShutdown)
                 return;
-            if (!fGenerateBitcoins)
+            if (!fGenerateFerretcoins)
                 return;
         }
 
@@ -3685,7 +3685,7 @@ void static BitcoinMiner(CWallet *pwallet)
             return;
         IncrementExtraNonce(pblock.get(), pindexPrev, nExtraNonce);
 
-        printf("Running BitcoinMiner with %d transactions in block\n", pblock->vtx.size());
+        printf("Running FerretcoinMiner with %d transactions in block\n", pblock->vtx.size());
 
 
         //
@@ -3766,7 +3766,7 @@ void static BitcoinMiner(CWallet *pwallet)
             // Check for stop or if block needs to be rebuilt
             if (fShutdown)
                 return;
-            if (!fGenerateBitcoins)
+            if (!fGenerateFerretcoins)
                 return;
             if (fLimitProcessors && vnThreadsRunning[THREAD_MINER] > nLimitProcessors)
                 return;
@@ -3792,35 +3792,35 @@ void static BitcoinMiner(CWallet *pwallet)
     }
 }
 
-void static ThreadBitcoinMiner(void* parg)
+void static ThreadFerretcoinMiner(void* parg)
 {
     CWallet* pwallet = (CWallet*)parg;
     try
     {
         vnThreadsRunning[THREAD_MINER]++;
-        BitcoinMiner(pwallet);
+        FerretcoinMiner(pwallet);
         vnThreadsRunning[THREAD_MINER]--;
     }
     catch (std::exception& e) {
         vnThreadsRunning[THREAD_MINER]--;
-        PrintException(&e, "ThreadBitcoinMiner()");
+        PrintException(&e, "ThreadFerretcoinMiner()");
     } catch (...) {
         vnThreadsRunning[THREAD_MINER]--;
-        PrintException(NULL, "ThreadBitcoinMiner()");
+        PrintException(NULL, "ThreadFerretcoinMiner()");
     }
     nHPSTimerStart = 0;
     if (vnThreadsRunning[THREAD_MINER] == 0)
         dHashesPerSec = 0;
-    printf("ThreadBitcoinMiner exiting, %d threads remaining\n", vnThreadsRunning[THREAD_MINER]);
+    printf("ThreadFerretcoinMiner exiting, %d threads remaining\n", vnThreadsRunning[THREAD_MINER]);
 }
 
 
-void GenerateBitcoins(bool fGenerate, CWallet* pwallet)
+void GenerateFerretcoins(bool fGenerate, CWallet* pwallet)
 {
-    fGenerateBitcoins = fGenerate;
+    fGenerateFerretcoins = fGenerate;
     nLimitProcessors = GetArg("-genproclimit", -1);
     if (nLimitProcessors == 0)
-        fGenerateBitcoins = false;
+        fGenerateFerretcoins = false;
     fLimitProcessors = (nLimitProcessors != -1);
 
     if (fGenerate)
@@ -3832,11 +3832,11 @@ void GenerateBitcoins(bool fGenerate, CWallet* pwallet)
         if (fLimitProcessors && nProcessors > nLimitProcessors)
             nProcessors = nLimitProcessors;
         int nAddThreads = nProcessors - vnThreadsRunning[THREAD_MINER];
-        printf("Starting %d BitcoinMiner threads\n", nAddThreads);
+        printf("Starting %d FerretcoinMiner threads\n", nAddThreads);
         for (int i = 0; i < nAddThreads; i++)
         {
-            if (!CreateThread(ThreadBitcoinMiner, pwallet))
-                printf("Error: CreateThread(ThreadBitcoinMiner) failed\n");
+            if (!CreateThread(ThreadFerretcoinMiner, pwallet))
+                printf("Error: CreateThread(ThreadFerretcoinMiner) failed\n");
             Sleep(10);
         }
     }

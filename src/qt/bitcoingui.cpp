@@ -2,9 +2,9 @@
  * Qt4 bitcoin GUI.
  *
  * W.J. van der Laan 2011-2012
- * The Bitcoin Developers 2011-2012
+ * The Ferretcoin Developers 2011-2012
  * The Litecoin Developers 201-2013
- * The Phenixcoin Developers 2013
+ * The Ferretcoin Developers 2013
  */
 #include "bitcoingui.h"
 #include "transactiontablemodel.h"
@@ -59,7 +59,7 @@
 
 #include <iostream>
 
-BitcoinGUI::BitcoinGUI(QWidget *parent):
+FerretcoinGUI::FerretcoinGUI(QWidget *parent):
     QMainWindow(parent),
     clientModel(0),
     walletModel(0),
@@ -71,7 +71,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     rpcConsole(0)
 {
     resize(850, 550);
-    setWindowTitle(tr("Phenixcoin") + " - " + tr("Wallet"));
+    setWindowTitle(tr("Ferretcoin") + " - " + tr("Wallet"));
 #ifndef Q_WS_MAC
     qApp->setWindowIcon(QIcon(":icons/bitcoin"));
     setWindowIcon(QIcon(":icons/bitcoin"));
@@ -181,7 +181,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     gotoOverviewPage();
 }
 
-BitcoinGUI::~BitcoinGUI()
+FerretcoinGUI::~FerretcoinGUI()
 {
     if(trayIcon) // Hide tray icon, as deleting will let it linger until quit (on Ubuntu)
         trayIcon->hide();
@@ -190,7 +190,7 @@ BitcoinGUI::~BitcoinGUI()
 #endif
 }
 
-void BitcoinGUI::createActions()
+void FerretcoinGUI::createActions()
 {
     QActionGroup *tabGroup = new QActionGroup(this);
 
@@ -224,17 +224,17 @@ void BitcoinGUI::createActions()
     tabGroup->addAction(receiveCoinsAction);
 
     sendCoinsAction = new QAction(QIcon(":/icons/send"), tr("&Send coins"), this);
-    sendCoinsAction->setToolTip(tr("Send coins to a Phenixcoin address"));
+    sendCoinsAction->setToolTip(tr("Send coins to a Ferretcoin address"));
     sendCoinsAction->setCheckable(true);
     sendCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_2));
     tabGroup->addAction(sendCoinsAction);
 
     signMessageAction = new QAction(QIcon(":/icons/edit"), tr("Sign &message..."), this);
-    signMessageAction->setToolTip(tr("Sign a message to prove you own a Phenixcoin address"));
+    signMessageAction->setToolTip(tr("Sign a message to prove you own a Ferretcoin address"));
     tabGroup->addAction(signMessageAction);
 
     verifyMessageAction = new QAction(QIcon(":/icons/transaction_0"), tr("&Verify message..."), this);
-    verifyMessageAction->setToolTip(tr("Verify a message to ensure it was signed with a specified Phenixcoin address"));
+    verifyMessageAction->setToolTip(tr("Verify a message to ensure it was signed with a specified Ferretcoin address"));
     tabGroup->addAction(verifyMessageAction);
 
 #ifdef FIRST_CLASS_MESSAGING
@@ -269,17 +269,17 @@ void BitcoinGUI::createActions()
     quitAction->setToolTip(tr("Quit application"));
     quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
     quitAction->setMenuRole(QAction::QuitRole);
-    aboutAction = new QAction(QIcon(":/icons/bitcoin"), tr("&About Phenixcoin"), this);
-    aboutAction->setToolTip(tr("Show information about Phenixcoin"));
+    aboutAction = new QAction(QIcon(":/icons/bitcoin"), tr("&About Ferretcoin"), this);
+    aboutAction->setToolTip(tr("Show information about Ferretcoin"));
     aboutAction->setMenuRole(QAction::AboutRole);
     aboutQtAction = new QAction(tr("About &Qt"), this);
     aboutQtAction->setToolTip(tr("Show information about Qt"));
     aboutQtAction->setMenuRole(QAction::AboutQtRole);
     optionsAction = new QAction(QIcon(":/icons/options"), tr("&Options..."), this);
-    optionsAction->setToolTip(tr("Modify configuration options for Phenixcoin"));
+    optionsAction->setToolTip(tr("Modify configuration options for Ferretcoin"));
     optionsAction->setMenuRole(QAction::PreferencesRole);
-    toggleHideAction = new QAction(QIcon(":/icons/bitcoin"), tr("Show/Hide &Phenixcoin"), this);
-    toggleHideAction->setToolTip(tr("Show or hide the Phenixcoin window"));
+    toggleHideAction = new QAction(QIcon(":/icons/bitcoin"), tr("Show/Hide &Ferretcoin"), this);
+    toggleHideAction->setToolTip(tr("Show or hide the Ferretcoin window"));
     exportAction = new QAction(QIcon(":/icons/export"), tr("&Export..."), this);
     exportAction->setToolTip(tr("Export the data in the current tab to a file"));
     encryptWalletAction = new QAction(QIcon(":/icons/lock_closed"), tr("&Encrypt Wallet..."), this);
@@ -302,7 +302,7 @@ void BitcoinGUI::createActions()
     connect(changePassphraseAction, SIGNAL(triggered()), this, SLOT(changePassphrase()));
 }
 
-void BitcoinGUI::createMenuBar()
+void FerretcoinGUI::createMenuBar()
 {
 #ifdef Q_WS_MAC
     // Create a decoupled menu bar on Mac which stays even if the window is closed
@@ -336,7 +336,7 @@ void BitcoinGUI::createMenuBar()
     help->addAction(aboutQtAction);
 }
 
-void BitcoinGUI::createToolBars()
+void FerretcoinGUI::createToolBars()
 {
     QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -355,7 +355,7 @@ void BitcoinGUI::createToolBars()
     toolbar2->addAction(exportAction);
 }
 
-void BitcoinGUI::setClientModel(ClientModel *clientModel)
+void FerretcoinGUI::setClientModel(ClientModel *clientModel)
 {
     this->clientModel = clientModel;
     if(clientModel)
@@ -372,7 +372,7 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
 #endif
             if(trayIcon)
             {
-                trayIcon->setToolTip(tr("Phenixcoin client") + QString(" ") + tr("[testnet]"));
+                trayIcon->setToolTip(tr("Ferretcoin client") + QString(" ") + tr("[testnet]"));
                 trayIcon->setIcon(QIcon(":/icons/toolbar_testnet"));
                 toggleHideAction->setIcon(QIcon(":/icons/toolbar_testnet"));
             }
@@ -399,7 +399,7 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
     }
 }
 
-void BitcoinGUI::setWalletModel(WalletModel *walletModel)
+void FerretcoinGUI::setWalletModel(WalletModel *walletModel)
 {
     this->walletModel = walletModel;
     if(walletModel)
@@ -429,14 +429,14 @@ void BitcoinGUI::setWalletModel(WalletModel *walletModel)
     }
 }
 
-void BitcoinGUI::createTrayIcon()
+void FerretcoinGUI::createTrayIcon()
 {
     QMenu *trayIconMenu;
 #ifndef Q_WS_MAC
     trayIcon = new QSystemTrayIcon(this);
     trayIconMenu = new QMenu(this);
     trayIcon->setContextMenu(trayIconMenu);
-    trayIcon->setToolTip(tr("Phenixcoin client"));
+    trayIcon->setToolTip(tr("Ferretcoin client"));
     trayIcon->setIcon(QIcon(":/icons/toolbar"));
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
@@ -469,17 +469,17 @@ void BitcoinGUI::createTrayIcon()
 }
 
 #ifndef Q_WS_MAC
-void BitcoinGUI::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
+void FerretcoinGUI::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     if(reason == QSystemTrayIcon::Trigger)
     {
-        // Click on system tray icon triggers "show/hide Phenixcoin"
+        // Click on system tray icon triggers "show/hide Ferretcoin"
         toggleHideAction->trigger();
     }
 }
 #endif
 
-void BitcoinGUI::optionsClicked()
+void FerretcoinGUI::optionsClicked()
 {
     if(!clientModel || !clientModel->getOptionsModel())
         return;
@@ -488,14 +488,14 @@ void BitcoinGUI::optionsClicked()
     dlg.exec();
 }
 
-void BitcoinGUI::aboutClicked()
+void FerretcoinGUI::aboutClicked()
 {
     AboutDialog dlg;
     dlg.setModel(clientModel);
     dlg.exec();
 }
 
-void BitcoinGUI::setNumConnections(int count)
+void FerretcoinGUI::setNumConnections(int count)
 {
     QString icon;
     switch(count)
@@ -507,10 +507,10 @@ void BitcoinGUI::setNumConnections(int count)
     default: icon = ":/icons/connect_4"; break;
     }
     labelConnectionsIcon->setPixmap(QIcon(icon).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
-    labelConnectionsIcon->setToolTip(tr("%n active connection(s) to Phenixcoin network", "", count));
+    labelConnectionsIcon->setToolTip(tr("%n active connection(s) to Ferretcoin network", "", count));
 }
 
-void BitcoinGUI::setNumBlocks(int count, int nTotalBlocks)
+void FerretcoinGUI::setNumBlocks(int count, int nTotalBlocks)
 {
     // don't show / hide progressBar and it's label if we have no connection(s) to the network
     if (!clientModel || clientModel->getNumConnections() == 0)
@@ -618,21 +618,21 @@ void BitcoinGUI::setNumBlocks(int count, int nTotalBlocks)
     progressBar->setToolTip(tooltip);
 }
 
-void BitcoinGUI::setMining(bool mining, int hashrate)
+void FerretcoinGUI::setMining(bool mining, int hashrate)
 {
     if (mining)
     {
         labelMiningIcon->setPixmap(QIcon(":/icons/mining_active").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
-        labelMiningIcon->setToolTip(tr("Mining Phenixcoins at %1 hashes per second").arg(hashrate));
+        labelMiningIcon->setToolTip(tr("Mining Ferretcoins at %1 hashes per second").arg(hashrate));
     }
     else
     {
         labelMiningIcon->setPixmap(QIcon(":/icons/mining_inactive").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
-        labelMiningIcon->setToolTip(tr("Not mining Phenixcoins"));
+        labelMiningIcon->setToolTip(tr("Not mining Ferretcoins"));
     }
 }
 
-void BitcoinGUI::error(const QString &title, const QString &message, bool modal)
+void FerretcoinGUI::error(const QString &title, const QString &message, bool modal)
 {
     // Report errors from network/worker thread
     if(modal)
@@ -643,7 +643,7 @@ void BitcoinGUI::error(const QString &title, const QString &message, bool modal)
     }
 }
 
-void BitcoinGUI::changeEvent(QEvent *e)
+void FerretcoinGUI::changeEvent(QEvent *e)
 {
     QMainWindow::changeEvent(e);
 #ifndef Q_WS_MAC // Ignored on Mac
@@ -662,7 +662,7 @@ void BitcoinGUI::changeEvent(QEvent *e)
 #endif
 }
 
-void BitcoinGUI::closeEvent(QCloseEvent *event)
+void FerretcoinGUI::closeEvent(QCloseEvent *event)
 {
     if(clientModel)
     {
@@ -677,20 +677,20 @@ void BitcoinGUI::closeEvent(QCloseEvent *event)
     QMainWindow::closeEvent(event);
 }
 
-void BitcoinGUI::askFee(qint64 nFeeRequired, bool *payFee)
+void FerretcoinGUI::askFee(qint64 nFeeRequired, bool *payFee)
 {
     QString strMessage =
         tr("This transaction is over the size limit.  You can still send it for a fee of %1, "
           "which goes to the nodes that process your transaction and helps to support the network.  "
           "Do you want to pay the fee?").arg(
-                BitcoinUnits::formatWithUnit(BitcoinUnits::BTC, nFeeRequired));
+                FerretcoinUnits::formatWithUnit(FerretcoinUnits::BTC, nFeeRequired));
     QMessageBox::StandardButton retval = QMessageBox::question(
           this, tr("Confirm transaction fee"), strMessage,
           QMessageBox::Yes|QMessageBox::Cancel, QMessageBox::Yes);
     *payFee = (retval == QMessageBox::Yes);
 }
 
-void BitcoinGUI::incomingTransaction(const QModelIndex & parent, int start, int end)
+void FerretcoinGUI::incomingTransaction(const QModelIndex & parent, int start, int end)
 {
     if(!walletModel || !clientModel)
         return;
@@ -719,13 +719,13 @@ void BitcoinGUI::incomingTransaction(const QModelIndex & parent, int start, int 
                                  "Type: %3\n"
                                  "Address: %4\n")
                               .arg(date)
-                              .arg(BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), amount, true))
+                              .arg(FerretcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), amount, true))
                               .arg(type)
                               .arg(address), icon);
     }
 }
 
-void BitcoinGUI::gotoOverviewPage()
+void FerretcoinGUI::gotoOverviewPage()
 {
     overviewAction->setChecked(true);
     centralWidget->setCurrentWidget(overviewPage);
@@ -734,7 +734,7 @@ void BitcoinGUI::gotoOverviewPage()
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
 }
 
-void BitcoinGUI::gotoMiningPage()
+void FerretcoinGUI::gotoMiningPage()
 {
     miningAction->setChecked(true);
     centralWidget->setCurrentWidget(miningPage);
@@ -743,7 +743,7 @@ void BitcoinGUI::gotoMiningPage()
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
 }
 
-void BitcoinGUI::gotoHistoryPage()
+void FerretcoinGUI::gotoHistoryPage()
 {
     historyAction->setChecked(true);
     centralWidget->setCurrentWidget(transactionsPage);
@@ -753,7 +753,7 @@ void BitcoinGUI::gotoHistoryPage()
     connect(exportAction, SIGNAL(triggered()), transactionView, SLOT(exportClicked()));
 }
 
-void BitcoinGUI::gotoAddressBookPage()
+void FerretcoinGUI::gotoAddressBookPage()
 {
     addressBookAction->setChecked(true);
     centralWidget->setCurrentWidget(addressBookPage);
@@ -763,7 +763,7 @@ void BitcoinGUI::gotoAddressBookPage()
     connect(exportAction, SIGNAL(triggered()), addressBookPage, SLOT(exportClicked()));
 }
 
-void BitcoinGUI::gotoReceiveCoinsPage()
+void FerretcoinGUI::gotoReceiveCoinsPage()
 {
     receiveCoinsAction->setChecked(true);
     centralWidget->setCurrentWidget(receiveCoinsPage);
@@ -773,7 +773,7 @@ void BitcoinGUI::gotoReceiveCoinsPage()
     connect(exportAction, SIGNAL(triggered()), receiveCoinsPage, SLOT(exportClicked()));
 }
 
-void BitcoinGUI::gotoSendCoinsPage()
+void FerretcoinGUI::gotoSendCoinsPage()
 {
     sendCoinsAction->setChecked(true);
     centralWidget->setCurrentWidget(sendCoinsPage);
@@ -782,7 +782,7 @@ void BitcoinGUI::gotoSendCoinsPage()
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
 }
 
-void BitcoinGUI::gotoSignMessageTab(QString addr)
+void FerretcoinGUI::gotoSignMessageTab(QString addr)
 {
 #ifdef FIRST_CLASS_MESSAGING
     firstClassMessagingAction->setChecked(true);
@@ -801,7 +801,7 @@ void BitcoinGUI::gotoSignMessageTab(QString addr)
         signVerifyMessageDialog->setAddress_SM(addr);
 }
 
-void BitcoinGUI::gotoVerifyMessageTab(QString addr)
+void FerretcoinGUI::gotoVerifyMessageTab(QString addr)
 {
 #ifdef FIRST_CLASS_MESSAGING
     firstClassMessagingAction->setChecked(true);
@@ -820,14 +820,14 @@ void BitcoinGUI::gotoVerifyMessageTab(QString addr)
         signVerifyMessageDialog->setAddress_VM(addr);
 }
 
-void BitcoinGUI::dragEnterEvent(QDragEnterEvent *event)
+void FerretcoinGUI::dragEnterEvent(QDragEnterEvent *event)
 {
     // Accept only URIs
     if(event->mimeData()->hasUrls())
         event->acceptProposedAction();
 }
 
-void BitcoinGUI::dropEvent(QDropEvent *event)
+void FerretcoinGUI::dropEvent(QDropEvent *event)
 {
     if(event->mimeData()->hasUrls())
     {
@@ -843,13 +843,13 @@ void BitcoinGUI::dropEvent(QDropEvent *event)
         if (nValidUrisFound)
             gotoSendCoinsPage();
         else
-            notificator->notify(Notificator::Warning, tr("URI handling"), tr("URI can not be parsed! This can be caused by an invalid Phenixcoin address or malformed URI parameters."));
+            notificator->notify(Notificator::Warning, tr("URI handling"), tr("URI can not be parsed! This can be caused by an invalid Ferretcoin address or malformed URI parameters."));
     }
 
     event->acceptProposedAction();
 }
 
-void BitcoinGUI::handleURI(QString strURI)
+void FerretcoinGUI::handleURI(QString strURI)
 {
     // URI has to be valid
     if (sendCoinsPage->handleURI(strURI))
@@ -858,10 +858,10 @@ void BitcoinGUI::handleURI(QString strURI)
         gotoSendCoinsPage();
     }
     else
-        notificator->notify(Notificator::Warning, tr("URI handling"), tr("URI can not be parsed! This can be caused by an invalid Phenixcoin address or malformed URI parameters."));
+        notificator->notify(Notificator::Warning, tr("URI handling"), tr("URI can not be parsed! This can be caused by an invalid Ferretcoin address or malformed URI parameters."));
 }
 
-void BitcoinGUI::setEncryptionStatus(int status)
+void FerretcoinGUI::setEncryptionStatus(int status)
 {
     switch(status)
     {
@@ -890,7 +890,7 @@ void BitcoinGUI::setEncryptionStatus(int status)
     }
 }
 
-void BitcoinGUI::encryptWallet(bool status)
+void FerretcoinGUI::encryptWallet(bool status)
 {
     if(!walletModel)
         return;
@@ -902,7 +902,7 @@ void BitcoinGUI::encryptWallet(bool status)
     setEncryptionStatus(walletModel->getEncryptionStatus());
 }
 
-void BitcoinGUI::backupWallet()
+void FerretcoinGUI::backupWallet()
 {
     QString saveDir = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
     QString filename = QFileDialog::getSaveFileName(this, tr("Backup Wallet"), saveDir, tr("Wallet Data (*.dat)"));
@@ -913,14 +913,14 @@ void BitcoinGUI::backupWallet()
     }
 }
 
-void BitcoinGUI::changePassphrase()
+void FerretcoinGUI::changePassphrase()
 {
     AskPassphraseDialog dlg(AskPassphraseDialog::ChangePass, this);
     dlg.setModel(walletModel);
     dlg.exec();
 }
 
-void BitcoinGUI::unlockWallet()
+void FerretcoinGUI::unlockWallet()
 {
     if(!walletModel)
         return;
@@ -933,7 +933,7 @@ void BitcoinGUI::unlockWallet()
     }
 }
 
-void BitcoinGUI::showNormalIfMinimized(bool fToggleHidden)
+void FerretcoinGUI::showNormalIfMinimized(bool fToggleHidden)
 {
     // activateWindow() (sometimes) helps with keyboard focus on Windows
     if (isHidden())
@@ -955,7 +955,7 @@ void BitcoinGUI::showNormalIfMinimized(bool fToggleHidden)
         hide();
 }
 
-void BitcoinGUI::toggleHidden()
+void FerretcoinGUI::toggleHidden()
 {
     showNormalIfMinimized(true);
 }

@@ -99,7 +99,7 @@ Section -post SEC0001
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
     WriteRegStr HKCR "litceoin" "URL Protocol" ""
-    WriteRegStr HKCR "litecoin" "" "URL:Bitcoin"
+    WriteRegStr HKCR "litecoin" "" "URL:Ferretcoin"
     WriteRegStr HKCR "litecoin\DefaultIcon" "" $INSTDIR\litecoin-qt.exe
     WriteRegStr HKCR "litecoin\shell\open\command" "" '"$INSTDIR\litecoin-qt.exe" "$$1"'
 SectionEnd

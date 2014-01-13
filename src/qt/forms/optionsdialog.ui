@@ -59,7 +59,7 @@
           </widget>
          </item>
          <item>
-          <widget class="BitcoinAmountField" name="transactionFee"/>
+          <widget class="FerretcoinAmountField" name="transactionFee"/>
          </item>
          <item>
           <spacer name="horizontalSpacer_Main">
@@ -79,10 +79,10 @@
        <item>
         <widget class="QCheckBox" name="bitcoinAtStartup">
          <property name="toolTip">
-          <string>Automatically start Phenixcoin after logging in to the system.</string>
+          <string>Automatically start Ferretcoin after logging in to the system.</string>
          </property>
          <property name="text">
-          <string>&amp;Start Phenixcoin on system login</string>
+          <string>&amp;Start Ferretcoin on system login</string>
          </property>
         </widget>
        </item>
@@ -446,7 +446,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>BitcoinAmountField</class>
+   <class>FerretcoinAmountField</class>
    <extends>QSpinBox</extends>
    <header>bitcoinamountfield.h</header>
   </customwidget>

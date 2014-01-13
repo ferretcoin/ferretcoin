@@ -35,7 +35,7 @@ Q_IMPORT_PLUGIN(qtaccessiblewidgets)
 #endif
 
 // Need a global reference for the notifications to find the GUI
-static BitcoinGUI *guiref;
+static FerretcoinGUI *guiref;
 static QSplashScreen *splashref;
 
 static void ThreadSafeMessageBox(const std::string& message, const std::string& caption, int style)
@@ -109,7 +109,7 @@ static std::string Translate(const char* psz)
 static void handleRunawayException(std::exception *e)
 {
     PrintExceptionContinue(e, "Runaway exception");
-    QMessageBox::critical(0, "Runaway exception", BitcoinGUI::tr("A fatal error occured. Phenixcoin can no longer continue safely and will quit.") + QString("\n\n") + QString::fromStdString(strMiscWarning));
+    QMessageBox::critical(0, "Runaway exception", FerretcoinGUI::tr("A fatal error occured. Ferretcoin can no longer continue safely and will quit.") + QString("\n\n") + QString::fromStdString(strMiscWarning));
     exit(1);
 }
 
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
     // Do this early as we don't want to bother initializing if we are just calling IPC
     for (int i = 1; i < argc; i++)
     {
-        if (boost::algorithm::istarts_with(argv[i], "phenixcoin:"))
+        if (boost::algorithm::istarts_with(argv[i], "ferretcoin:"))
         {
             const char *strURI = argv[i];
             try {
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
                     // if URI could be sent to the message queue exit here
                     exit(0);
                 else
-                    // if URI could not be sent to the message queue do a normal Bitcoin-Qt startup
+                    // if URI could not be sent to the message queue do a normal Ferretcoin-Qt startup
                     break;
             }
             catch (boost::interprocess::interprocess_exception &ex) {
@@ -169,12 +169,12 @@ int main(int argc, char *argv[])
 
     // Application identification (must be set before OptionsModel is initialized,
     // as it is used to locate QSettings)
-    app.setOrganizationName("Phenixcoin");
-    app.setOrganizationDomain("phenixcoin.com");
+    app.setOrganizationName("Ferretcoin");
+    app.setOrganizationDomain("ferretcoin.com");
     if(GetBoolArg("-testnet")) // Separate UI settings for testnet
-        app.setApplicationName("Phenixcoin-Qt-testnet");
+        app.setApplicationName("Ferretcoin-Qt-testnet");
     else
-        app.setApplicationName("Phenixcoin-Qt");
+        app.setApplicationName("Ferretcoin-Qt");
 
     // ... then GUI settings:
     OptionsModel optionsModel;
@@ -241,7 +241,7 @@ int main(int argc, char *argv[])
         if (GUIUtil::GetStartOnSystemStartup())
             GUIUtil::SetStartOnSystemStartup(true);
 
-        BitcoinGUI window;
+        FerretcoinGUI window;
         guiref = &window;
         if(AppInit2())
         {
@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
                 // Check for URI in argv
                 for (int i = 1; i < argc; i++)
                 {
-                    if (boost::algorithm::istarts_with(argv[i], "phenixcoin:"))
+                    if (boost::algorithm::istarts_with(argv[i], "ferretcoin:"))
                     {
                         const char *strURI = argv[i];
                         try {
@@ -299,7 +299,7 @@ int main(int argc, char *argv[])
                 window.setWalletModel(0);
                 guiref = 0;
             }
-            // Shutdown the core and it's threads, but don't exit Bitcoin-Qt here
+            // Shutdown the core and it's threads, but don't exit Ferretcoin-Qt here
             Shutdown(NULL);
         }
         else

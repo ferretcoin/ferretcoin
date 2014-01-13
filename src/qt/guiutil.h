@@ -15,7 +15,7 @@ class QAbstractItemView;
 QT_END_NAMESPACE
 class SendCoinsRecipient;
 
-/** Utility functions used by the Phenixcoin Qt UI.
+/** Utility functions used by the Ferretcoin Qt UI.
  */
 namespace GUIUtil
 {
@@ -23,17 +23,17 @@ namespace GUIUtil
     QString dateTimeStr(const QDateTime &datetime);
     QString dateTimeStr(qint64 nTime);
 
-    // Render Phenixcoin addresses in monospace font
+    // Render Ferretcoin addresses in monospace font
     QFont bitcoinAddressFont();
 
     // Set up widgets for address and amounts
     void setupAddressWidget(QLineEdit *widget, QWidget *parent);
     void setupAmountWidget(QLineEdit *widget, QWidget *parent);
 
-    // Parse "phenixcoin:" URI into recipient object, return true on succesful parsing
-    // See Bitcoin URI definition discussion here: https://bitcointalk.org/index.php?topic=33490.0
-    bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out);
-    bool parseBitcoinURI(QString uri, SendCoinsRecipient *out);
+    // Parse "ferretcoin:" URI into recipient object, return true on succesful parsing
+    // See Ferretcoin URI definition discussion here: https://bitcointalk.org/index.php?topic=33490.0
+    bool parseFerretcoinURI(const QUrl &uri, SendCoinsRecipient *out);
+    bool parseFerretcoinURI(QString uri, SendCoinsRecipient *out);
 
     // HTML escaping for rich text controls
     QString HtmlEscape(const QString& str, bool fMultiLine=false);
@@ -95,7 +95,7 @@ namespace GUIUtil
     bool GetStartOnSystemStartup();
     bool SetStartOnSystemStartup(bool fAutoStart);
 
-    /** Help message for Phenixcoin-Qt, shown with --help. */
+    /** Help message for Ferretcoin-Qt, shown with --help. */
     class HelpMessageBox : public QMessageBox
     {
         Q_OBJECT

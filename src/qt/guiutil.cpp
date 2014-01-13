@@ -62,8 +62,8 @@ QFont bitcoinAddressFont()
 
 void setupAddressWidget(QLineEdit *widget, QWidget *parent)
 {
-    widget->setMaxLength(BitcoinAddressValidator::MaxAddressLength);
-    widget->setValidator(new BitcoinAddressValidator(parent));
+    widget->setMaxLength(FerretcoinAddressValidator::MaxAddressLength);
+    widget->setValidator(new FerretcoinAddressValidator(parent));
     widget->setFont(bitcoinAddressFont());
 }
 
@@ -76,13 +76,13 @@ void setupAmountWidget(QLineEdit *widget, QWidget *parent)
     widget->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 }
 
-bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
+bool parseFerretcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 {
-    if(uri.scheme() != QString("phenixcoin"))
+    if(uri.scheme() != QString("ferretcoin"))
         return false;
 
     // check if the address is valid
-    CBitcoinAddress addressFromUri(uri.path().toStdString());
+    CFerretcoinAddress addressFromUri(uri.path().toStdString());
     if (!addressFromUri.IsValid())
         return false;
 
@@ -108,7 +108,7 @@ bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
         {
             if(!i->second.isEmpty())
             {
-                if(!BitcoinUnits::parse(BitcoinUnits::BTC, i->second, &rv.amount))
+                if(!FerretcoinUnits::parse(FerretcoinUnits::BTC, i->second, &rv.amount))
                 {
                     return false;
                 }
@@ -126,18 +126,18 @@ bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
     return true;
 }
 
-bool parseBitcoinURI(QString uri, SendCoinsRecipient *out)
+bool parseFerretcoinURI(QString uri, SendCoinsRecipient *out)
 {
-    // Convert phenixcoin:// to phenixcoin:
+    // Convert ferretcoin:// to ferretcoin:
     //
-    //    Cannot handle this later, because phenixcoin:// will cause Qt to see the part after // as host,
+    //    Cannot handle this later, because ferretcoin:// will cause Qt to see the part after // as host,
     //    which will lowercase it (and thus invalidate the address).
-    if(uri.startsWith("phenixcoin://"))
+    if(uri.startsWith("ferretcoin://"))
     {
-        uri.replace(0, 11, "phenixcoin:");
+        uri.replace(0, 11, "ferretcoin:");
     }
     QUrl uriInstance(uri);
-    return parseBitcoinURI(uriInstance, out);
+    return parseFerretcoinURI(uriInstance, out);
 }
 
 QString HtmlEscape(const QString& str, bool fMultiLine)
@@ -278,12 +278,12 @@ bool ToolTipToRichTextFilter::eventFilter(QObject *obj, QEvent *evt)
 #ifdef WIN32
 boost::filesystem::path static StartupShortcutPath()
 {
-    return GetSpecialFolderPath(CSIDL_STARTUP) / "Phenixcoin.lnk";
+    return GetSpecialFolderPath(CSIDL_STARTUP) / "Ferretcoin.lnk";
 }
 
 bool GetStartOnSystemStartup()
 {
-    // check for Phenixcoin.lnk
+    // check for Ferretcoin.lnk
     return boost::filesystem::exists(StartupShortcutPath());
 }
 
@@ -360,7 +360,7 @@ boost::filesystem::path static GetAutostartDir()
 
 boost::filesystem::path static GetAutostartFilePath()
 {
-    return GetAutostartDir() / "phenixcoin.desktop";
+    return GetAutostartDir() / "ferretcoin.desktop";
 }
 
 bool GetStartOnSystemStartup()
@@ -398,10 +398,10 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         boost::filesystem::ofstream optionFile(GetAutostartFilePath(), std::ios_base::out|std::ios_base::trunc);
         if (!optionFile.good())
             return false;
-        // Write a phenixcoin.desktop file to the autostart directory:
+        // Write a ferretcoin.desktop file to the autostart directory:
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
-        optionFile << "Name=Phenixcoin\n";
+        optionFile << "Name=Ferretcoin\n";
         optionFile << "Exec=" << pszExePath << " -min\n";
         optionFile << "Terminal=false\n";
         optionFile << "Hidden=false\n";
@@ -422,10 +422,10 @@ bool SetStartOnSystemStartup(bool fAutoStart) { return false; }
 HelpMessageBox::HelpMessageBox(QWidget *parent) :
     QMessageBox(parent)
 {
-    header = tr("Phenixcoin-Qt") + " " + tr("version") + " " +
+    header = tr("Ferretcoin-Qt") + " " + tr("version") + " " +
         QString::fromStdString(FormatFullVersion()) + "\n\n" +
         tr("Usage:") + "\n" +
-        "  phenixcoin-qt [" + tr("command-line options") + "]                     " + "\n";
+        "  ferretcoin-qt [" + tr("command-line options") + "]                     " + "\n";
 
     coreOptions = QString::fromStdString(HelpMessage());
 
@@ -434,7 +434,7 @@ HelpMessageBox::HelpMessageBox(QWidget *parent) :
         "  -min                   " + tr("Start minimized") + "\n" +
         "  -splash                " + tr("Show splash screen on startup (default: 1)") + "\n";
 
-    setWindowTitle(tr("Phenixcoin-Qt"));
+    setWindowTitle(tr("Ferretcoin-Qt"));
     setTextFormat(Qt::PlainText);
     // setMinimumWidth is ignored for QMessageBox so put in nonbreaking spaces to make it wider.
     setText(header + QString(QChar(0x2003)).repeated(50));

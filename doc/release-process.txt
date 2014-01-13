@@ -16,7 +16,7 @@
 
 * perform gitian builds
 
-  * From a directory containing the phenixcoin source, gitian-builder and gitian.sigs
+  * From a directory containing the ferretcoin source, gitian-builder and gitian.sigs
    export SIGNER=(your gitian key, ie bluematt, sipa, etc)
    export VERSION=0.5.1
    cd ./gitian-builder
@@ -32,44 +32,44 @@
    wget 'http://downloads.sourceforge.net/project/boost/boost/1.47.0/boost_1_47_0.tar.bz2'
    wget 'http://download.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.7.4.tar.gz'
    cd ..
-   ./bin/gbuild ../phenixcoin/contrib/gitian-descriptors/boost-win32.yml
+   ./bin/gbuild ../ferretcoin/contrib/gitian-descriptors/boost-win32.yml
    cp build/out/boost-win32-1.47.0-gitian.zip inputs/
-   ./bin/gbuild ../phenixcoin/contrib/gitian-descriptors/qt-win32.yml
+   ./bin/gbuild ../ferretcoin/contrib/gitian-descriptors/qt-win32.yml
    cp build/out/qt-win32-4.7.4-gitian.zip inputs/
-   ./bin/gbuild ../phenixcoin/contrib/gitian-descriptors/deps-win32.yml
-   cp build/out/phenixcoin-deps-0.0.3.zip inputs/
+   ./bin/gbuild ../ferretcoin/contrib/gitian-descriptors/deps-win32.yml
+   cp build/out/ferretcoin-deps-0.0.3.zip inputs/
 
-  * Build phenixcoind and phenixcoin-qt on Linux32, Linux64, and Win32:
-   ./bin/gbuild --commit phenixcoin=v${VERSION} ../phenixcoin/contrib/gitian-descriptors/gitian.yml
-   ./bin/gsign --signer $SIGNER --release ${VERSION} --destination ../gitian.sigs/ ../phenixcoin/contrib/gitian-descriptors/gitian.yml
+  * Build ferretcoind and ferretcoin-qt on Linux32, Linux64, and Win32:
+   ./bin/gbuild --commit ferretcoin=v${VERSION} ../ferretcoin/contrib/gitian-descriptors/gitian.yml
+   ./bin/gsign --signer $SIGNER --release ${VERSION} --destination ../gitian.sigs/ ../ferretcoin/contrib/gitian-descriptors/gitian.yml
    pushd build/out
-   zip -r phenixcoin-${VERSION}-linux-gitian.zip *
-   mv phenixcoin-${VERSION}-linux-gitian.zip ../../
+   zip -r ferretcoin-${VERSION}-linux-gitian.zip *
+   mv ferretcoin-${VERSION}-linux-gitian.zip ../../
    popd
-   ./bin/gbuild --commit phenixcoin=v${VERSION} ../phenixcoin/contrib/gitian-descriptors/gitian-win32.yml
-   ./bin/gsign --signer $SIGNER --release ${VERSION}-win32 --destination ../gitian.sigs/ ../phenixcoin/contrib/gitian-descriptors/gitian-win32.yml
+   ./bin/gbuild --commit ferretcoin=v${VERSION} ../ferretcoin/contrib/gitian-descriptors/gitian-win32.yml
+   ./bin/gsign --signer $SIGNER --release ${VERSION}-win32 --destination ../gitian.sigs/ ../ferretcoin/contrib/gitian-descriptors/gitian-win32.yml
    pushd build/out
-   zip -r phenixcoin-${VERSION}-win32-gitian.zip *
-   mv phenixcoin-${VERSION}-win32-gitian.zip ../../
+   zip -r ferretcoin-${VERSION}-win32-gitian.zip *
+   mv ferretcoin-${VERSION}-win32-gitian.zip ../../
    popd
 
   Build output expected:
-  1. linux 32-bit and 64-bit binaries + source (phenixcoin-${VERSION}-linux-gitian.zip)
-  2. windows 32-bit binary, installer + source (phenixcoin-${VERSION}-win32-gitian.zip)
+  1. linux 32-bit and 64-bit binaries + source (ferretcoin-${VERSION}-linux-gitian.zip)
+  2. windows 32-bit binary, installer + source (ferretcoin-${VERSION}-win32-gitian.zip)
   3. Gitian signatures (in gitian.sigs/${VERSION}[-win32]/(your gitian key)/
 
 * repackage gitian builds for release as stand-alone zip/tar/installer exe
 
   * Linux .tar.gz:
-   unzip phenixcoin-${VERSION}-linux-gitian.zip -d phenixcoin-${VERSION}-linux
-   tar czvf phenixcoin-${VERSION}-linux.tar.gz phenixcoin-${VERSION}-linux
-   rm -rf phenixcoin-${VERSION}-linux
+   unzip ferretcoin-${VERSION}-linux-gitian.zip -d ferretcoin-${VERSION}-linux
+   tar czvf ferretcoin-${VERSION}-linux.tar.gz ferretcoin-${VERSION}-linux
+   rm -rf ferretcoin-${VERSION}-linux
 
   * Windows .zip and setup.exe:
-   unzip phenixcoin-${VERSION}-win32-gitian.zip -d phenixcoin-${VERSION}-win32
-   mv phenixcoin-${VERSION}-win32/phenixcoin-*-setup.exe .
-   zip -r phenixcoin-${VERSION}-win32.zip phenixcoin-${VERSION}-win32
-   rm -rf phenixcoin-${VERSION}-win32
+   unzip ferretcoin-${VERSION}-win32-gitian.zip -d ferretcoin-${VERSION}-win32
+   mv ferretcoin-${VERSION}-win32/ferretcoin-*-setup.exe .
+   zip -r ferretcoin-${VERSION}-win32.zip ferretcoin-${VERSION}-win32
+   rm -rf ferretcoin-${VERSION}-win32
 
 * perform Mac build
   See this blog post for how Gavin set up his build environment to build the OSX
@@ -83,10 +83,10 @@
   make
   export QTDIR=/opt/local/share/qt4  # needed to find translations/qt_*.qm files
   T=$(contrib/qt_translations.py $QTDIR/translations src/qt/locale)
-  python2.7 contrib/macdeploy/macdeployqtplus Phenixcoin-Qt.app -add-qt-tr $T -dmg -fancy contrib/macdeploy/fancy.plist
+  python2.7 contrib/macdeploy/macdeployqtplus Ferretcoin-Qt.app -add-qt-tr $T -dmg -fancy contrib/macdeploy/fancy.plist
 
  Build output expected:
-  Phenixcoin-Qt.dmg
+  Ferretcoin-Qt.dmg
 
 * upload builds to SourceForge
 

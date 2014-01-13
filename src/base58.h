@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2012 The Bitcoin Developers
+// Copyright (c) 2009-2012 The Ferretcoin Developers
 // Copyright (c) 2011-2012 Litecoin Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -254,30 +254,30 @@ public:
     bool operator> (const CBase58Data& b58) const { return CompareTo(b58) >  0; }
 };
 
-/** base58-encoded Bitcoin addresses.
+/** base58-encoded Ferretcoin addresses.
  * Public-key-hash-addresses have version 0 (or 111 testnet).
  * The data vector contains RIPEMD160(SHA256(pubkey)), where pubkey is the serialized public key.
  * Script-hash-addresses have version 5 (or 196 testnet).
  * The data vector contains RIPEMD160(SHA256(cscript)), where cscript is the serialized redemption script.
  */
-class CBitcoinAddress;
-class CBitcoinAddressVisitor : public boost::static_visitor<bool>
+class CFerretcoinAddress;
+class CFerretcoinAddressVisitor : public boost::static_visitor<bool>
 {
 private:
-    CBitcoinAddress *addr;
+    CFerretcoinAddress *addr;
 public:
-    CBitcoinAddressVisitor(CBitcoinAddress *addrIn) : addr(addrIn) { }
+    CFerretcoinAddressVisitor(CFerretcoinAddress *addrIn) : addr(addrIn) { }
     bool operator()(const CKeyID &id) const;
     bool operator()(const CScriptID &id) const;
     bool operator()(const CNoDestination &no) const;
 };
 
-class CBitcoinAddress : public CBase58Data
+class CFerretcoinAddress : public CBase58Data
 {
 public:
     enum
     {
-        PUBKEY_ADDRESS = 56, // Phenixcoin addresses start with P
+        PUBKEY_ADDRESS = 38, // Ferretcoin addresses start with f
         SCRIPT_ADDRESS = 5,
         PUBKEY_ADDRESS_TEST = 111,
         SCRIPT_ADDRESS_TEST = 196,
@@ -295,7 +295,7 @@ public:
 
     bool Set(const CTxDestination &dest)
     {
-        return boost::apply_visitor(CBitcoinAddressVisitor(this), dest);
+        return boost::apply_visitor(CFerretcoinAddressVisitor(this), dest);
     }
 
     bool IsValid() const
@@ -328,21 +328,21 @@ public:
         return fExpectTestNet == fTestNet && vchData.size() == nExpectedSize;
     }
 
-    CBitcoinAddress()
+    CFerretcoinAddress()
     {
     }
 
-    CBitcoinAddress(const CTxDestination &dest)
+    CFerretcoinAddress(const CTxDestination &dest)
     {
         Set(dest);
     }
 
-    CBitcoinAddress(const std::string& strAddress)
+    CFerretcoinAddress(const std::string& strAddress)
     {
         SetString(strAddress);
     }
 
-    CBitcoinAddress(const char* pszAddress)
+    CFerretcoinAddress(const char* pszAddress)
     {
         SetString(pszAddress);
     }
@@ -395,18 +395,18 @@ public:
     }
 };
 
-bool inline CBitcoinAddressVisitor::operator()(const CKeyID &id) const         { return addr->Set(id); }
-bool inline CBitcoinAddressVisitor::operator()(const CScriptID &id) const      { return addr->Set(id); }
-bool inline CBitcoinAddressVisitor::operator()(const CNoDestination &id) const { return false; }
+bool inline CFerretcoinAddressVisitor::operator()(const CKeyID &id) const         { return addr->Set(id); }
+bool inline CFerretcoinAddressVisitor::operator()(const CScriptID &id) const      { return addr->Set(id); }
+bool inline CFerretcoinAddressVisitor::operator()(const CNoDestination &id) const { return false; }
 
 /** A base58-encoded secret key */
-class CBitcoinSecret : public CBase58Data
+class CFerretcoinSecret : public CBase58Data
 {
 public:
     enum
     {
-        PRIVKEY_ADDRESS = CBitcoinAddress::PUBKEY_ADDRESS + 128,
-        PRIVKEY_ADDRESS_TEST = CBitcoinAddress::PUBKEY_ADDRESS_TEST + 128,
+        PRIVKEY_ADDRESS = CFerretcoinAddress::PUBKEY_ADDRESS + 128,
+        PRIVKEY_ADDRESS_TEST = CFerretcoinAddress::PUBKEY_ADDRESS_TEST + 128,
     };
 
     void SetSecret(const CSecret& vchSecret, bool fCompressed)
@@ -454,12 +454,12 @@ public:
         return SetString(strSecret.c_str());
     }
 
-    CBitcoinSecret(const CSecret& vchSecret, bool fCompressed)
+    CFerretcoinSecret(const CSecret& vchSecret, bool fCompressed)
     {
         SetSecret(vchSecret, fCompressed);
     }
 
-    CBitcoinSecret()
+    CFerretcoinSecret()
     {
     }
 };

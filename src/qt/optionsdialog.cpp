@@ -88,7 +88,7 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
         }
     }
 
-    ui->unit->setModel(new BitcoinUnits(this));
+    ui->unit->setModel(new FerretcoinUnits(this));
 
     connect(ui->connectSocks, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning_Proxy()));
     connect(ui->lang, SIGNAL(activated(int)), this, SLOT(showRestartWarning_Lang()));
@@ -193,7 +193,7 @@ void OptionsDialog::showRestartWarning_Proxy()
 {
     if(!fRestartWarningDisplayed_Proxy)
     {
-        QMessageBox::warning(this, tr("Warning"), tr("This setting will take effect after restarting Phenixcoin."), QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Warning"), tr("This setting will take effect after restarting Ferretcoin."), QMessageBox::Ok);
         fRestartWarningDisplayed_Proxy = true;
     }
 }
@@ -202,7 +202,7 @@ void OptionsDialog::showRestartWarning_Lang()
 {
     if(!fRestartWarningDisplayed_Lang)
     {
-        QMessageBox::warning(this, tr("Warning"), tr("This setting will take effect after restarting Phenixcoin."), QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Warning"), tr("This setting will take effect after restarting Ferretcoin."), QMessageBox::Ok);
         fRestartWarningDisplayed_Lang = true;
     }
 }

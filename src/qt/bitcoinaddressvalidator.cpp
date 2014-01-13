@@ -13,12 +13,12 @@
   - '0' and 'O' to 'o'
 */
 
-BitcoinAddressValidator::BitcoinAddressValidator(QObject *parent) :
+FerretcoinAddressValidator::FerretcoinAddressValidator(QObject *parent) :
     QValidator(parent)
 {
 }
 
-QValidator::State BitcoinAddressValidator::validate(QString &input, int &pos) const
+QValidator::State FerretcoinAddressValidator::validate(QString &input, int &pos) const
 {
     // Correction
     for(int idx=0; idx<input.size();)

@@ -39,7 +39,7 @@ Icon Pack: Crystal SVG
 License: LGPL
 
 Icon: src/qt/res/icons/bitcoin.png, src/qt/res/icons/toolbar.png
-Designer: BitcoinPorn (forum)
+Designer: FerretcoinPorn (forum)
 License: Public Domain
 Site: https://bitcointalk.org/index.php?topic=47417.msg591988#msg591988
 
@@ -50,7 +50,7 @@ License: GNU/GPL
 Site: http://findicons.com/icon/17102/reload?id=17102
 
 Image: src/qt/res/images/splash2.jpg (Wallet image)
-Designer: Crobbo (forum), adapted to Litecoin by BitcoinPorn (forum)
+Designer: Crobbo (forum), adapted to Litecoin by FerretcoinPorn (forum)
 Site: https://bitcointalk.org/index.php?topic=32273.0, https://bitcointalk.org/index.php?topic=47417.msg591988#msg591988
 License: Public domain
 

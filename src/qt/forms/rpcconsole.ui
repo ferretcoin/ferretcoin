@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Phenixcoin - Debug window</string>
+   <string>Ferretcoin - Debug window</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -36,7 +36,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Phenixcoin Core</string>
+          <string>Ferretcoin Core</string>
          </property>
         </widget>
        </item>
